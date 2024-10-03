@@ -1,0 +1,158 @@
+pipeline {
+    agent any
+
+    options {
+        buildDiscarder(
+            logRotator(
+                artifactDaysToKeepStr: '7',
+                artifactNumToKeepStr: '3',
+                daysToKeepStr: '14',
+                numToKeepStr: '30'
+            )
+        )
+
+        disableConcurrentBuilds()
+        quietPeriod 600
+    }
+
+    environment {
+        KAS = "${env.WORKSPACE}/config/kas/kas-container"
+        KAS_YAML = "${env.WORKSPACE}/xilinx-poky-kas.yaml"
+        KAS_CONTAINER_IMAGE = 'docker.io/xroumegue/kas-xilinx:4.5'
+        DL_DIR = "${env.YOCTO_DL_DIR}"
+        SSTATE_DIR = "${env.YOCTO_SSTATE_DIR}"
+    }
+
+    triggers{ pollSCM('H/15 19-23,0-7 * * *') }
+
+    stages {
+        stage('Build-helpers') {
+            steps {
+                dir("config") {
+                    checkout(
+                        changelog: true,
+                        poll: true,
+                        scm: [
+                            $class: 'GitSCM',
+                            branches: [[name: 'master']],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [
+                                [ $class: 'CleanCheckout'],
+                                [ $class: 'RelativeTargetDirectory',
+                                    relativeTargetDir: 'kas'
+                                ],
+                                [ $class: 'CheckoutOption',
+                                    timeout: 30
+                                ],
+                                [ $class: 'CloneOption',
+                                    depth: 0,
+                                    noTags: false,
+                                    reference: '',
+                                    shallow: false,
+                                    timeout: 45,
+                                ]
+                            ],
+                            submoduleCfg: [],
+                            userRemoteConfigs: [
+                                [url: 'https://github.com/siemens/kas.git']
+                            ]
+                        ]
+                    )
+
+                    checkout(
+                        changelog: true,
+                        poll: true,
+                        scm: [
+                            $class: 'GitSCM',
+                            branches: [[name: 'main']],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [
+                                [ $class: 'CleanCheckout'],
+                                [ $class: 'RelativeTargetDirectory',
+                                    relativeTargetDir: 'helper'
+                                ],
+                                [ $class: 'SubmoduleOption',
+                                    disableSubmodules: false,
+                                    parentCredentials: false,
+                                    recursiveSubmodules: true,
+                                    reference: '',
+                                    trackingSubmodules: false
+                                ],
+                                [ $class: 'RelativeTargetDirectory',
+                                    relativeTargetDir: 'helpers'
+                                ],
+                                [ $class: 'CheckoutOption',
+                                    timeout: 30
+                                ],
+                                [ $class: 'CloneOption',
+                                    depth: 0,
+                                    noTags: false,
+                                    reference: '',
+                                    shallow: false,
+                                    timeout: 45,
+                                ]
+                            ],
+                            submoduleCfg: [],
+                            userRemoteConfigs: [
+                                [url: 'https://github.com/xroumegue/build-helpers.git']
+                            ]
+                        ]
+                    )
+                    checkout(
+                        changelog: true,
+                        poll: true,
+                        scm: [
+                            $class: 'GitSCM',
+                            branches: [[name: 'staging']],
+                            doGenerateSubmoduleConfigurations: false,
+                            extensions: [
+                                [ $class: 'CleanCheckout'],
+                                [ $class: 'SubmoduleOption',
+                                    disableSubmodules: false,
+                                    parentCredentials: false,
+                                    recursiveSubmodules: true,
+                                    reference: '',
+                                    trackingSubmodules: false
+                                ],
+                                [ $class: 'RelativeTargetDirectory',
+                                    relativeTargetDir: 'helpers-config'
+                                ],
+                                [ $class: 'CheckoutOption',
+                                    timeout: 30
+                                ],
+                                [ $class: 'CloneOption',
+                                    depth: 0,
+                                    noTags: false,
+                                    reference: '',
+                                    shallow: false,
+                                    timeout: 45,
+                                ]
+                            ],
+                            submoduleCfg: [],
+                            userRemoteConfigs: [
+                                [url: 'https://github.com/xroumegue/build-helpers-config.git']
+                            ]
+                        ]
+                    )
+                }
+            }
+        }
+
+        stage('sources') {
+                steps {
+                    dir("work") {
+                    sh '''${KAS} checkout ${KAS_YAML}'''
+                    sh '''${KAS} dump ${KAS_YAML}'''
+                }
+            }
+        }
+
+        stage('build') {
+            steps {
+                dir("work") {
+                    sh '''${KAS} --log-level debug build ${KAS_YAML}'''
+                }
+            }
+        }
+    }
+}
