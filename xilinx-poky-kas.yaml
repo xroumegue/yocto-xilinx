@@ -11,7 +11,7 @@ repos:
   poky:
     url: https://github.com/Xilinx/poky.git
     path: sources/poky
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
     layers:
       meta:
       meta-poky:
@@ -19,7 +19,7 @@ repos:
   meta-openembedded:
     url: https://github.com/Xilinx/meta-openembedded.git
     path: sources/meta-openembedded
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
     layers:
       meta-perl:
       meta-python:
@@ -35,7 +35,7 @@ repos:
   meta-security:
     url: https://github.com/Xilinx/meta-security.git
     path: sources/meta-security
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
     layers:
       .:
       meta-tpm:
@@ -43,7 +43,7 @@ repos:
   meta-xilinx:
     url: https://github.com/Xilinx/meta-xilinx.git
     path: sources/meta-xilinx
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
     layers:
       meta-xilinx-core:
       meta-microblaze:
@@ -56,47 +56,47 @@ repos:
   meta-petalinux:
     url: https://github.com/Xilinx/meta-petalinux.git
     path: sources/meta-petalinux
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-xilinx-tools:
     url: https://github.com/Xilinx/meta-xilinx-tools.git
     path: sources/meta-xilinx-tools
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-virtualization:
     url: https://github.com/Xilinx/meta-virtualization.git
     path: sources/meta-virtualization
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-openamp:
     url: https://github.com/Xilinx/meta-openamp.git
     path: sources/meta-openamp
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-kria:
     url: https://github.com/Xilinx/meta-kria.git
     path: sources/meta-kria
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-xilinx-tsn:
     url: https://github.com/Xilinx/meta-xilinx-tsn.git
     path: sources/meta-xilinx-tsn
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-qt5:
     url: https://github.com/Xilinx/meta-qt5.git
     path: sources/meta-qt5
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-aws:
     url: https://github.com/Xilinx/meta-aws.git
     path: sources/meta-aws
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-ros:
     url: https://github.com/Xilinx/meta-ros.git
     path: sources/meta-ros
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
     layers:
       meta-ros-common:
       meta-ros2:
@@ -105,22 +105,22 @@ repos:
   meta-jupyter:
     url: https://github.com/Xilinx/meta-jupyter.git
     path: sources/meta-jupyter
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-system-controller:
     url: https://github.com/Xilinx/meta-system-controller.git
     path: sources/meta-system-controller
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-mingw:
     url: https://github.com/Xilinx/meta-mingw.git
     path: sources/meta-mingw
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
   meta-vitis:
     url: https://github.com/Xilinx/meta-vitis.git
     path: sources/meta-vitis
-    tag: xlnx-rel-v2024.1
+    branch: rel-v2024.1
 
 bblayers_conf_header:
   standard: |
