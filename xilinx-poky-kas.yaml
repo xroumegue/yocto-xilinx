@@ -4,6 +4,7 @@ header:
 machine: k26-smk-kv
 distro: petalinux
 target:
+  - kria-qspi
   - kria-image-full-cmdline
 
 repos:
